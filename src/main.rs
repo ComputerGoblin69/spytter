@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+#![warn(clippy::nursery, clippy::pedantic)]
 
 use tiny_http::{Response, Server};
 
