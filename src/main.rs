@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use tiny_http::{Response, Server};
 
 fn main() {
