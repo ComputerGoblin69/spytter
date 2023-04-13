@@ -1,26 +1,20 @@
 #![forbid(unsafe_code)]
 #![warn(clippy::nursery, clippy::pedantic)]
 
-use tiny_http::{Header, Response, Server};
+use axum::Router;
+use tower_http::services::{ServeDir, ServeFile};
 
-const PAGE_404: &str = include_str!("../site/404.html");
-
-fn main() {
-    let server = Server::http("0.0.0.0:3000").unwrap();
-
-    for request in server.incoming_requests() {
-        println!(
-            "received request! method: {:?}, url: {:?}, headers: {:?}",
-            request.method(),
-            request.url(),
-            request.headers()
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route_service("/", ServeFile::new("static/index.html"))
+        .fallback_service(
+            ServeDir::new("static")
+                .not_found_service(ServeFile::new("static/404.html")),
         );
 
-        let response = Response::from_string(PAGE_404)
-            .with_status_code(404)
-            .with_header(
-                Header::from_bytes("Content-Type", "text/html").unwrap(),
-            );
-        request.respond(response).unwrap();
-    }
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }
