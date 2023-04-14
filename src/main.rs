@@ -13,7 +13,7 @@ async fn main() {
 
     let app = Router::new()
         .route_service("/", ServeFile::new("static/index.html"))
-        .route("/api/spyyts", get(api::spyyts))
+        .route("/api/spyyts", get(api::spyyts).post(api::post_spyyt))
         .fallback_service(
             ServeDir::new("static")
                 .not_found_service(ServeFile::new("static/404.html")),
