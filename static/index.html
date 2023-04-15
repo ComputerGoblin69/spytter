@@ -3,6 +3,24 @@
 <head>
 	<title>Spytter</title>
 	<link rel="stylesheet" href="/style.css">
+	<script>
+		{
+			let req = new XMLHttpRequest();
+			req.responseType = "json";
+			req.open("GET", "/api/spyyts");
+			req.onreadystatechange = () => {
+				if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+					const feed = document.getElementById("feed");
+					for (const spyyt of req.response) {
+						let p = document.createElement("p");
+						p.textContent = spyyt.text;
+						feed.append(p);
+					}
+				}
+			};
+			req.send();
+		}
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -20,7 +38,7 @@
 				<input type="text" placeholder="Search...">
 				<button>Search</button>
 			</div>
-			<div class="feed">
+			<div class="feed" id="feed">
 				<!-- SPYYYT FEED -->
 			</div>
 		</div>
