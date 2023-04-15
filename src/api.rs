@@ -41,5 +41,8 @@ pub async fn post_spyyt(
     State(state): State<Arc<SpytterState>>,
     Json(spyyt): Json<Spyyt>,
 ) {
-    state.spyyts.write().unwrap().push(spyyt);
+    // TODO: Return some sort of error when the message is too long
+    if spyyt.text.len() <= 281 {
+        state.spyyts.write().unwrap().push(spyyt);
+    }
 }
