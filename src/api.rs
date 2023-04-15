@@ -7,9 +7,19 @@ pub struct SpytterState {
 }
 
 impl SpytterState {
-    pub const fn new() -> Self {
+    pub fn new() -> Self {
         Self {
-            spyyts: RwLock::new(Vec::new()),
+            spyyts: RwLock::new(vec![
+                Spyyt {
+                    text: "Example spyyt 1".to_owned(),
+                },
+                Spyyt {
+                    text: "Example spyyt 2".to_owned(),
+                },
+                Spyyt {
+                    text: "Example spyyt 3".to_owned(),
+                },
+            ]),
         }
     }
 }
