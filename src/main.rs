@@ -12,7 +12,6 @@ async fn main() {
     let state = Arc::new(api::SpytterState::new());
 
     let app = Router::new()
-        .route_service("/", ServeFile::new("static/index.html"))
         .route("/api/spyyts", get(api::spyyts).post(api::post_spyyt))
         .fallback_service(
             ServeDir::new("static")
