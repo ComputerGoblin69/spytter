@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Spytter</title>
-	<link rel="stylesheet" href="/style.css">
-	<script>
-		{
-			let req = new XMLHttpRequest();
-			req.responseType = "json";
-			req.open("GET", "/api/spyyts");
-			req.onreadystatechange = () => {
-				if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-					const feed = document.getElementById("feed");
-					for (const spyyt of req.response) {
-						let p = document.createElement("p");
-						p.textContent = spyyt.text;
-						feed.append(p);
-					}
-				}
-			};
-			req.send();
-		}
-	</script>
-</head>
-<body>
-	<div class="container">
-		<div class="sidebar">
-			<a href="/">
-				<img src="/images/birb.svg" alt="Spytter" class="logo">
-			</a>
-			<ul>
-				<li><a href="/pages/forus.html">For us</a></li>
-				<li><a href="/pages/following.html">Following</a></li>
-			</ul>
-		</div>
-		<div class="middle">
-			<div class="search">
-				<input type="text" placeholder="Search...">
-				<button>Search</button>
-			</div>
-			<div class="feed" id="feed">
-				<!-- SPYYYT FEED -->
-			</div>
-		</div>
-		<div class="right">
-			<div class="spyyt-box">
-				<p class="spyyt-text">Spyyt</p>
-				<input type="text" placeholder="Write something boring">
-			</div>
-			<button type="button" class="spyyt-button"><span></span>SPYYT</button>
-		</div>
-	</div>
-</body>
+  <head>
+    <title>Spytter</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script>
+      {
+        let req = new XMLHttpRequest();
+        req.responseType = "json";
+        req.open("GET", "/api/spyyts");
+        req.onreadystatechange = () => {
+          if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+            const feed = document.getElementById("feed");
+            for (const spyyt of req.response) {
+              let p = document.createElement("p");
+              p.textContent = spyyt.text;
+              feed.append(p);
+            }
+          }
+        };
+        req.send();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <a href="/">
+          <img src="/images/birb.svg" alt="Spytter" class="logo" />
+        </a>
+        <ul>
+          <li><a href="/pages/forus.html">For us</a></li>
+          <li><a href="/pages/following.html">Following</a></li>
+        </ul>
+      </div>
+      <div class="middle">
+        <div class="search">
+          <input type="text" placeholder="Search..." />
+          <button>Search</button>
+        </div>
+        <div class="feed" id="feed">
+          <!-- SPYYYT FEED -->
+        </div>
+      </div>
+      <div class="right">
+        <div class="spyyt-box">
+          <p class="spyyt-text">Spyyt</p>
+          <input type="text" placeholder="Write something boring" />
+        </div>
+        <button type="button" class="spyyt-button"><span></span>SPYYT</button>
+      </div>
+    </div>
+  </body>
 </html>
