@@ -1,11 +1,11 @@
 html {
   --background-color: #1c1e21;
   --sidebar-background-color: #242526;
-  --communist-red: #e13030;
+  --communist-red: #df0e0e;
   --text-color: #ffffff;
   --search-bar-colour: #373a3c;
-  --border-color: #474a4d;
-  --logo-hover: #d3d3d3;
+  --border-color: #5e5e5e;
+  --logo-hover: #b2a4a4;
 }
 * {
   margin: 0;
@@ -40,7 +40,6 @@ body {
   margin-right: 10px;
   margin-top: 5px;
   border: 1px solid transparent;
-  border-radius: 50%;
 }
 
 .logo img {
@@ -95,8 +94,6 @@ input[type="text"] {
 }
 
 button {
-  font-family: sans-serif;
-  font-weight: bold;
   padding: 10px 20px;
   background-color: var(--communist-red);
   color: var(--text-color);
@@ -128,7 +125,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
+  width: 250px;
   background-color: var(--sidebar-background-color);
   border-left: 1px solid var(--border-color);
   padding: 20px; /* added padding */
@@ -164,7 +161,8 @@ button:hover span {
 }
 .spyyt-box {
   background-color: var(--background-color);
-  padding: 5px;
+  padding: 10px;
+  border-radius: 10px;
 }
 input:focus,
 textarea:focus,
@@ -173,7 +171,8 @@ select:focus {
 }
 
 .logo:hover {
-  border-radius: 1px solid var(--logo-hover);
+  border-color: var(--logo-hover);
+  border-radius: 45%;
 }
 
 .sidebar li a:hover {
