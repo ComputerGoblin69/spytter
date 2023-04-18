@@ -33,7 +33,7 @@
               feed.removeChild(feed.lastChild);
             }
             for (const spyyt of req.response) {
-              let p = document.createElement("p");
+              let p = document.createElement("li");
               p.textContent = spyyt.text;
               feed.append(p);
             }
@@ -61,9 +61,9 @@
           <input type="text" placeholder="Search..." />
           <button>Search</button>
         </div>
-        <div class="feed" id="feed">
+        <ul class="feed" id="feed">
           <!-- SPYYYT FEED -->
-        </div>
+        </ul>
       </div>
       <div class="right">
         <div class="spyyt-box">
