@@ -44,11 +44,6 @@ body {
   border: 1px solid transparent;
 }
 
-.logo img {
-  width: 100%;
-  height: auto;
-}
-
 ul {
   list-style-type: none;
   margin: 0;
