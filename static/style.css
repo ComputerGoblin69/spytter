@@ -12,6 +12,7 @@ html {
   padding: 0;
   box-sizing: border-box;
   font-family: "Helvetica Neue", "Segoe UI", "Helvetica", "Arial", "sans-serif";
+  overflow-wrap: break-word;
 }
 
 body {
