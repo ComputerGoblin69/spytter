@@ -3,7 +3,7 @@ html {
   --sidebar-background-color: #242526;
   --communist-red: #df0e0e;
   --text-color: #ffffff;
-  --search-bar-colour: #373a3c;
+  --feed-colour: #373a3c;
   --border-color: #5e5e5e;
   --logo-hover: #b2a4a4;
 }
@@ -72,17 +72,6 @@ li a {
   padding: 20px;
 }
 
-.search {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 15px;
-  background-color: var(--search-bar-colour);
-  border-radius: 9999px;
-  padding: 10px;
-  width: 100%;
-}
-
 input[type="text"] {
   padding: 10px;
   border: none;
@@ -103,15 +92,9 @@ button {
   margin-left: 10px;
 }
 
-.search:focus-within {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--communist-red);
-  transition: box-shadow 0.3s ease-in-out;
-}
-
 .feed {
   flex-grow: 1;
-  background-color: var(--search-bar-colour);
+  background-color: var(--feed-colour);
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   width: 100%;
