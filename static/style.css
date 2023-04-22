@@ -117,7 +117,7 @@ button {
   padding: 20px; /* added padding */
 }
 
-button[type="button"] {
+.spyyt-box button {
   padding: 10px 20px;
   background-color: var(--communist-red);
   color: var(--text-color);
