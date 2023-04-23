@@ -135,3 +135,9 @@ select:focus {
   border-bottom: 2px solid var(--communist-red);
   transition: border-bottom 0.3s ease-in-out;
 }
+
+.checkmark {
+  width: 1em;
+  vertical-align: middle;
+  margin: 0 0.2em 0 0.2em;
+}
