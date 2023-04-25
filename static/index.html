@@ -9,7 +9,7 @@
       async function postSpyyt() {
         let input = document.getElementById("spyyt-input");
         let text = input.value;
-        if (text.length == 0) return;
+        if (text.length === 0) return;
         input.value = "";
         await fetch("/api/spyyts", {
           method: "POST",
