@@ -4,12 +4,11 @@
 mod api;
 
 use axum::{routing::get, Router};
-use std::sync::Arc;
 use tower_http::services::{ServeDir, ServeFile};
 
 #[tokio::main]
 async fn main() {
-    let state = Arc::new(api::SpytterState::new());
+    let state = api::SpytterState::new();
 
     let app = Router::new()
         .route("/api/spyyts", get(api::spyyts).post(api::post_spyyt))

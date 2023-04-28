@@ -1,16 +1,27 @@
-use axum::{extract::State, Json};
+use axum::{
+    extract::{ws::Message, State, WebSocketUpgrade},
+    response::Response,
+    Json,
+};
 use serde::{Deserialize, Serialize};
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use tokio::sync::{
+    broadcast::{self, Sender},
+    RwLock,
+};
 
 const UWU_PROBABILITY: f32 = 0.05;
 
 pub struct SpytterState {
     spyyts: RwLock<Vec<Spyyt>>,
+    tx: Sender<Spyyt>,
 }
 
 impl SpytterState {
-    pub fn new() -> Self {
-        Self {
+    pub fn new() -> Arc<Self> {
+        let (tx, mut rx) = broadcast::channel(16);
+
+        let state = Arc::new(Self {
             spyyts: RwLock::new(vec![
                 Spyyt {
                     text: "Example spyyt 1".to_owned(),
@@ -22,7 +33,19 @@ impl SpytterState {
                     text: "Example spyyt 3".to_owned(),
                 },
             ]),
+            tx,
+        });
+
+        {
+            let state = state.clone();
+            tokio::spawn(async move {
+                while let Ok(spyyt) = rx.recv().await {
+                    state.spyyts.write().await.push(spyyt);
+                }
+            });
         }
+
+        state
     }
 }
 
@@ -31,11 +54,33 @@ pub struct Spyyt {
     text: String,
 }
 
-#[allow(clippy::unused_async)]
 pub async fn spyyts(
+    ws: WebSocketUpgrade,
     State(state): State<Arc<SpytterState>>,
-) -> Json<Vec<Spyyt>> {
-    Json(state.spyyts.read().unwrap().clone())
+) -> Response {
+    let mut rx = state.tx.subscribe();
+
+    ws.on_upgrade(|mut socket| async move {
+        let spyyts = state.spyyts.read().await;
+        socket
+            .send(Message::Text(serde_json::to_string(&*spyyts).unwrap()))
+            .await
+            .unwrap();
+
+        tokio::spawn(async move {
+            while let Ok(spyyt) = rx.recv().await {
+                if socket
+                    .send(Message::Text(
+                        serde_json::to_string(&[spyyt]).unwrap(),
+                    ))
+                    .await
+                    .is_err()
+                {
+                    break;
+                }
+            }
+        });
+    })
 }
 
 #[allow(clippy::unused_async)]
@@ -49,6 +94,6 @@ pub async fn post_spyyt(
             spyyt.text = uwuifier::uwuify_str_sse(&spyyt.text);
         }
 
-        state.spyyts.write().unwrap().push(spyyt);
+        state.tx.send(spyyt).ok();
     }
 }

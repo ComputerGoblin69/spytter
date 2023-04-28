@@ -19,32 +19,31 @@
           },
           body: JSON.stringify({ text }),
         });
-        reloadFeed();
       }
 
-      async function reloadFeed() {
-        const response = await fetch("/api/spyyts");
-        const spyyts = await response.json();
+      window.onload = () => {
+        const socket = new WebSocket(`ws://${window.location.host}/api/spyyts`);
         const feed = document.getElementById("feed");
-        while (feed.firstChild) {
-          feed.removeChild(feed.lastChild);
-        }
-        for (const spyyt of spyyts) {
-          let p = document.createElement("li");
-          p.textContent = spyyt.text;
-          while (Math.random() > 0.5) {
-            const checkmark = document.createElement("img");
-            checkmark.setAttribute("src", "/images/checkmark.svg");
-            checkmark.setAttribute("class", "checkmark");
-            checkmark.setAttribute("alt", "");
-            p.append(checkmark);
+        let initializedFeed = false;
+        socket.addEventListener("message", (event) => {
+          for (const spyyt of JSON.parse(event.data)) {
+            let p = document.createElement("li");
+            p.textContent = spyyt.text;
+            while (Math.random() > 0.5) {
+              const checkmark = document.createElement("img");
+              checkmark.setAttribute("src", "/images/checkmark.svg");
+              checkmark.setAttribute("class", "checkmark");
+              checkmark.setAttribute("alt", "");
+              p.append(checkmark);
+            }
+            feed.append(p);
           }
-          feed.append(p);
-        }
-        feed.lastChild.scrollIntoView();
-      }
-
-      reloadFeed();
+          if (!initializedFeed) {
+            initializedFeed = true;
+            feed.lastChild.scrollIntoView();
+          }
+        });
+      };
     </script>
   </head>
   <body>
