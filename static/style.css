@@ -92,6 +92,7 @@ button {
   width: 100%;
   max-width: 600px;
   padding: 20px;
+  overflow-anchor: none;
 }
 
 .right {
