@@ -87,7 +87,9 @@ pub async fn post_spyyt(
     Json(spyyt): Json<Spyyt>,
 ) {
     // TODO: Return some sort of error when the message is too long
-    if spyyt.text.len() <= 281 {
-        state.tx.send(spyyt).ok();
+    if !(1..=281).contains(&spyyt.text.len()) {
+        return;
     }
+
+    state.tx.send(spyyt).ok();
 }
