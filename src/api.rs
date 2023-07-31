@@ -10,8 +10,6 @@ use tokio::sync::{
     RwLock,
 };
 
-const UWU_PROBABILITY: f32 = 0.05;
-
 pub struct SpytterState {
     spyyts: RwLock<Vec<Spyyt>>,
     tx: Sender<Spyyt>,
@@ -86,14 +84,10 @@ pub async fn spyyts(
 #[allow(clippy::unused_async)]
 pub async fn post_spyyt(
     State(state): State<Arc<SpytterState>>,
-    Json(mut spyyt): Json<Spyyt>,
+    Json(spyyt): Json<Spyyt>,
 ) {
     // TODO: Return some sort of error when the message is too long
     if spyyt.text.len() <= 281 {
-        if fastrand::f32() < UWU_PROBABILITY {
-            spyyt.text = uwuifier::uwuify_str_sse(&spyyt.text);
-        }
-
         state.tx.send(spyyt).ok();
     }
 }
