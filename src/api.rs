@@ -4,40 +4,58 @@ use axum::{
     Json,
 };
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader, Write},
+    sync::Arc,
+};
 use tokio::sync::{
     broadcast::{self, Sender},
     RwLock,
 };
 
+const DB_PATH: &str = "db";
+
 pub struct SpytterState {
     spyyts: RwLock<Vec<Spyyt>>,
     tx: Sender<Spyyt>,
+    db: File,
 }
 
 impl SpytterState {
     pub fn new() -> Arc<Self> {
         let (tx, mut rx) = broadcast::channel(16);
 
+        let (spyyts, db) = File::options()
+            .read(true)
+            .append(true)
+            .open(DB_PATH)
+            .map_or_else(
+                |_| (Vec::new(), File::create(DB_PATH).unwrap()),
+                |mut db| {
+                    (
+                        BufReader::new(&mut db)
+                            .lines()
+                            .map(|line| Spyyt {
+                                text: line.unwrap(),
+                            })
+                            .collect(),
+                        db,
+                    )
+                },
+            );
+
         let state = Arc::new(Self {
-            spyyts: RwLock::new(vec![
-                Spyyt {
-                    text: "Example spyyt 1".to_owned(),
-                },
-                Spyyt {
-                    text: "Example spyyt 2".to_owned(),
-                },
-                Spyyt {
-                    text: "Example spyyt 3".to_owned(),
-                },
-            ]),
+            spyyts: RwLock::new(spyyts),
             tx,
+            db,
         });
 
         {
             let state = state.clone();
             tokio::spawn(async move {
                 while let Ok(spyyt) = rx.recv().await {
+                    writeln!(&state.db, "{}", spyyt.text).unwrap();
                     state.spyyts.write().await.push(spyyt);
                 }
             });
